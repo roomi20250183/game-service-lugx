@@ -48,13 +48,3 @@ jobs:
           tags: ${{ steps.prep.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Set up Kubeconfig
-        run: |
-          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
-
-      - name: Deploy to Kubernetes
-        run: |
-          # Replace deployment name and namespace accordingly
-          kubectl set image deployment/fastapi-backend fastapi-backend=${{ secrets.DOCKER_USERNAME }}/fastapi-backend:${{ steps.version.outputs.version }} -n default
-          kubectl rollout status deployment/fastapi-backend -n default
