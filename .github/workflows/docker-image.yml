@@ -27,7 +27,7 @@ jobs:
       - name: Prepare tags
         id: prep
         run: |
-          IMAGE=${{ secrets.DOCKER_USERNAME }}/fastapi-backend
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/game-service-lugx
           SHA_TAG=${IMAGE}:sha-${GITHUB_SHA::7}
           # Default tags (latest + sha)
           TAGS="${IMAGE}:latest,${SHA_TAG}"
