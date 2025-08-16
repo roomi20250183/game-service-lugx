@@ -14,12 +14,12 @@ spec:
     spec:
       containers:
       - name: game-service
-        image: mmroomi/lugx-game-service:latest
+        image: mmroomi/game-service-lugx:latest
         ports:
         - containerPort: 8000
         env:
         - name: DB_USER
-          value: "lugx_user"
+          value: "root"
         - name: DB_PASSWORD
           value: "lugx_pass"
         - name: DB_HOST

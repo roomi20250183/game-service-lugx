@@ -1,0 +1,59 @@
+# fastapi-backend.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-service-lugx
+  labels:
+    app: game-service-lugx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game-service-lugx
+  template:
+    metadata:
+      labels:
+        app: game-service-lugx
+    spec:
+      containers:
+        - name: game-service-lugx
+          image: mmroomi/game-service-lugx:latest
+          imagePullPolicy: Always   # ensure latest is fetched on every deploy
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: game-service-lugx
+  labels:
+    app: game-service-lugx
+spec:
+  type: NodePort
+  selector:
+    app: game-service-lugx
+  ports:
+    - name: http
+      port: 8000        # service port
+      targetPort: 8000  # container port
+      nodePort: 30090   # optional fixed NodePort; omit to let k8s choose
+
